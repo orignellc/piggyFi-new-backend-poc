@@ -6,6 +6,6 @@ export default class Encryptor {
   }
 
   static compare(password, hash) {
-    return bcrypt.compare(password, hash);
+    return bcrypt.compareSync(password, hash);
   }
 }

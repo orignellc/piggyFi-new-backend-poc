@@ -1,5 +1,4 @@
-import Encryptor from "../../../helpers/encrypter.js";
-import UserRecords from "../logics/User.js";
+import UserRecords from "../logics/UserRecords.js";
 
 export default async function registerUserAction(req, res) {
   const input = getRegisterInput(req.body);

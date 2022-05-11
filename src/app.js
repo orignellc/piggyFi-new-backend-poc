@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import { initialize } from "./registrar/initialize.js";
+import { initialize } from "./bootsrap/initialize.js";
 
 dotenv.config();
 
