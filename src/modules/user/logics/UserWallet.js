@@ -1,32 +1,31 @@
 import FactoryContract from "../../../services/smartContract/src/contracts/factoryContract.js";
-import { UserModel } from "../models/userModel.js";
+import UmojaWallet from "../../../services/umoja/umojaWallet.js";
 
 export default class UserWallet {
-  blockchainNetwork = process.env.BLOCKCHAIN_NETWORK;
+  wallet;
 
-  constructor(user) {
-    this.user = user;
-    this.factoryContract = new FactoryContract();
+  constructor(factory) {
+    this.wallet = factory || new UmojaWallet();
   }
 
-  async createWallet() {
-    const address = await this.factoryContract.newCustodialWallet(this.user.id);
-
-    const wallet = {
-      name: "BSC",
-      walletAddress: address,
-      balance: 0,
-      availableBalance: 0,
+  async createWallet(user) {
+    const input = {
+      phone: user.phone,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      country_code: user.country_code,
     };
+    const wallet = await this.wallet.create(input);
+    const providerName = this.wallet.getProviderName().toLowerCase();
 
-    if (this.user.wallets) {
-      this.user.wallets[this.blockchainNetwork] = wallet;
+    if (user.wallets) {
+      user.wallets[providerName] = wallet;
     } else {
-      this.user.wallets = { [this.blockchainNetwork]: wallet };
+      user.wallets = { [providerName]: wallet };
     }
 
-    this.user.save();
+    user.save();
 
-    return this.user;
+    return user;
   }
 }

@@ -6,17 +6,42 @@ export const USER_TYPE_CUSTOMER = "CUSTOMER";
 
 export const WalletSchema = mongoose.Schema({
   network: String,
-  walletAddress: String,
+  address: String,
   balance: Number,
-  availableBalance: Number,
+  available_balance: Number,
+});
+
+export const WalletUmojaSchema = mongoose.Schema({
+  wallet_id: String,
+  user_id: String,
+  address: String,
+  balance: Number,
+  available_balance: Number,
+  balance_in_local_currency: Number,
 });
 
 export const VendorSchema = mongoose.Schema({
-  rates: [{ currency: String, sellRate: Number, buyRate: Number }],
+  rates: [
+    {
+      currency: {
+        type: String,
+        required: true,
+        unique: true,
+      },
+      sellRate: Number,
+      buyRate: Number,
+    },
+  ],
 });
 
 export const UserSchema = mongoose.Schema(
   {
+    first_name: {
+      type: String,
+    },
+    last_name: {
+      type: String,
+    },
     name: {
       type: String,
     },
@@ -26,17 +51,19 @@ export const UserSchema = mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
+      // required: true,
+      // required: true,
       lowercase: true,
     },
     phone: {
       type: String,
+      required: true,
     },
     password: {
       type: String,
       required: true,
     },
-    countryCode: {
+    country_code: {
       type: String,
       required: true,
       uppercase: true,
@@ -50,6 +77,9 @@ export const UserSchema = mongoose.Schema(
       },
       avax: {
         type: WalletSchema,
+      },
+      umoja: {
+        type: WalletUmojaSchema,
       },
     },
     type: {

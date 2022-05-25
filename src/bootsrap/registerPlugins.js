@@ -1,6 +1,6 @@
 import cors from "cors";
 import express from "express";
-import jwt from "../services/authentication/middleware/jwt.js";
+import jwt from "../modules/user/middleware/jwt.js";
 
 export function registerPlugins(app) {
   app.use(cors());

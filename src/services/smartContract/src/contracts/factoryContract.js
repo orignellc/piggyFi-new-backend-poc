@@ -18,10 +18,20 @@ export default class FactoryContract {
     );
   }
 
+  getProviderName() {
+    return "Umoja";
+  }
+
   async newCustodialWallet(ownerId) {
     const response = await this.contract.newCustodian(ownerId);
     await response.wait();
 
-    return await this.contract.accounts(ownerId);
+    const address = await this.contract.accounts(ownerId);
+    return {
+      name: "PiggyFi",
+      address: address,
+      balance: 0,
+      available_balance: 0,
+    };
   }
 }

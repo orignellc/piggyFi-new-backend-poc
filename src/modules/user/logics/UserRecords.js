@@ -3,20 +3,18 @@ import Encryptor from "../../../helpers/encrypter.js";
 import UserWallet from "./UserWallet.js";
 
 async function createAndSetUserWallet(user) {
-  const userWallet = new UserWallet(user);
-  return await userWallet.createWallet();
+  const userWallet = new UserWallet();
+  return await userWallet.createWallet(user);
 }
 
 export default class UserRecords {
   static async createNewUser(fields) {
     fields.password = Encryptor.encrypt(fields.password);
-    const user = await UserModel.create(fields);
-
-    return await createAndSetUserWallet(user);
+    return await UserModel.create(fields);
   }
 
   static async findByEmailOrUsernameOrID(value) {
-    let user = await this.findByEmailOrUsername(value);
+    let user = await this.findByPhoneEmailOrUsername(value);
 
     if (user) {
       return user;
@@ -27,9 +25,9 @@ export default class UserRecords {
     return user;
   }
 
-  static async findByEmailOrUsername(value) {
+  static async findByPhoneEmailOrUsername(value) {
     return UserModel.findOne({
-      $or: [{ email: value }, { username: value }],
+      $or: [{ email: value }, { username: value }, { phone: value }],
     });
   }
 
