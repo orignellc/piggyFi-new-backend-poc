@@ -17,6 +17,15 @@ export default class UserJwtAuthenticator extends UserAuthenticator {
     };
   }
 
+  async authenticateUser(user) {
+    this.user = user;
+
+    return {
+      token: this.#generateJwt(),
+      user: user,
+    };
+  }
+
   #generateJwt() {
     const secret = process.env.JWT_SECRET || "secret";
     const expiresIn = parseInt(getExpirationTimeInMS(), 10);

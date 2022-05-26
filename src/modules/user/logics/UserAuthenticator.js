@@ -4,6 +4,9 @@ export default class UserAuthenticator {
   user;
 
   async authenticate({ identifier, password }) {
+    if (!identifier) {
+      throw new Error("identifier not set");
+    }
     this.user = await UserRecords.findByPhoneEmailOrUsername(identifier);
 
     const isValidCredentials = this.user && this.user.matchPassword(password);
