@@ -5,6 +5,18 @@ import FeeCalculator from "./FeeCalculator.js";
 export const WITHDRAW_TYPE_MOBILE_MONEY = "Mobile money";
 export const WITHDRAW_TYPE_CRYPTO = "Crypto";
 
+export const MOBILE_MONEY_PROVIDER_MPESA = "M-PESA";
+export const MOBILE_MONEY_PROVIDER_MONCASH = "Moncash";
+export const MOBILE_MONEY_PROVIDER_AIRTEL = "Airtel";
+export const MOBILE_MONEY_PROVIDER_MTN_MONEY = "MTN Money";
+
+export const MOBILE_MONEY_PROVIDERS = [
+  MOBILE_MONEY_PROVIDER_MPESA,
+  MOBILE_MONEY_PROVIDER_MONCASH,
+  MOBILE_MONEY_PROVIDER_AIRTEL,
+  MOBILE_MONEY_PROVIDER_MTN_MONEY,
+];
+
 export default class UmojaWallet {
   http;
   userWallet;

@@ -63,7 +63,7 @@ export default class UserWallet {
     );
 
     this.user = await this.syncBalanceAndGetDetails();
-    const userWallet = this.#getUserProviderWallet();
+    const userWallet = this.getUserProviderWallet();
 
     return TransactionModel.create({
       ...transaction,
@@ -76,13 +76,13 @@ export default class UserWallet {
     });
   }
 
-  #getUserProviderWallet() {
+  getUserProviderWallet() {
     const providerName = this.#walletProvider.getProviderName().toLowerCase();
     return this.user.wallets[providerName];
   }
 
   #walletCannotAffordInLocal(amount) {
-    const wallet = this.#getUserProviderWallet();
+    const wallet = this.getUserProviderWallet();
 
     return wallet.balance_in_local_currency < amount;
   }
