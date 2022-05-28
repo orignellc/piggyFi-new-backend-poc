@@ -1,11 +1,5 @@
 import { USER_TYPE_CUSTOMER, UserModel } from "../models/userModel.js";
 import Encryptor from "../../../helpers/encrypter.js";
-import UserWallet from "./UserWallet.js";
-
-async function createAndSetUserWallet(user) {
-  const userWallet = new UserWallet();
-  return await userWallet.createWallet(user);
-}
 
 export default class UserRecords {
   static async createNewUser(fields) {

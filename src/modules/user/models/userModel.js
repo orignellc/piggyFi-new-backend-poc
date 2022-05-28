@@ -6,18 +6,14 @@ export const USER_TYPE_CUSTOMER = "CUSTOMER";
 
 export const WalletSchema = mongoose.Schema({
   network: String,
-  address: String,
-  balance: Number,
-  available_balance: Number,
-});
-
-export const WalletUmojaSchema = mongoose.Schema({
   wallet_id: String,
   user_id: String,
   address: String,
+  locked: Boolean,
   balance: Number,
   available_balance: Number,
   balance_in_local_currency: Number,
+  local_currency: String,
 });
 
 export const VendorSchema = mongoose.Schema({
@@ -79,7 +75,7 @@ export const UserSchema = mongoose.Schema(
         type: WalletSchema,
       },
       umoja: {
-        type: WalletUmojaSchema,
+        type: WalletSchema,
       },
     },
     type: {

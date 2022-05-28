@@ -1,16 +1,13 @@
 import UserRecords from "../logics/UserRecords.js";
-import UserWallet, {
-  useDefaultUserWalletFactory,
-} from "../logics/UserWallet.js";
-import { useWallet } from "../../../services/umoja/index.js";
-import { CREATED } from "../../../helpers/response-codes.js";
+import { useDefaultUserWalletFactory } from "../logics/UserWallet.js";
+import { RESPONSE_CODE_CREATED } from "../../../helpers/response-codes.js";
 
 export default async function registerUserAction(req, res) {
   const input = getRegisterInput(req.body);
   let user = await UserRecords.createNewUser(input);
   user = await useDefaultUserWalletFactory(user).createWallet(user);
 
-  res.status(CREATED).json({
+  res.status(RESPONSE_CODE_CREATED).json({
     status: "success",
     user,
   });

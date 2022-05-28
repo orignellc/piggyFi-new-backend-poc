@@ -1,7 +1,8 @@
 import UmojaWallet from "./umojaWallet.js";
 import axios from "axios";
+import UserWallet from "../../modules/user/logics/UserWallet.js";
 
-export function useWallet() {
+export function useWallet(user) {
   const http = axios.create({
     baseURL: "https://money-api.staging.umoja.money",
     headers: {
@@ -13,5 +14,5 @@ export function useWallet() {
     },
   });
 
-  return new UmojaWallet(http);
+  return new UmojaWallet(user.wallets.umoja, http);
 }

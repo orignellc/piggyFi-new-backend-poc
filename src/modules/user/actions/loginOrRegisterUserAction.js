@@ -4,7 +4,10 @@ import UserWallet, {
 } from "../logics/UserWallet.js";
 import { useWallet } from "../../../services/umoja/index.js";
 import UserJwtAuthenticator from "../logics/UserJwtAuthenticator.js";
-import { CREATED, SUCCESS } from "../../../helpers/response-codes.js";
+import {
+  RESPONSE_CODE_CREATED,
+  SUCCESS,
+} from "../../../helpers/response-codes.js";
 
 export default async function loginOrRegisterUserAction(req, res) {
   const input = getRegisterInput(req.body);
@@ -19,7 +22,7 @@ export default async function loginOrRegisterUserAction(req, res) {
   user = await useDefaultUserWalletFactory(user).createWallet();
   authenticated = await new UserJwtAuthenticator().authenticateUser(user);
 
-  res.status(CREATED).json(authenticated);
+  res.status(RESPONSE_CODE_CREATED).json(authenticated);
 }
 
 function getRegisterInput(request) {
