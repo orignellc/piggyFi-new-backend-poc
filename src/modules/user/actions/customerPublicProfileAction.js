@@ -1,5 +1,8 @@
 import UserRecords from "../logics/UserRecords.js";
-import { NOT_FOUND, SUCCESS } from "../../../helpers/response-codes.js";
+import {
+  RESPONSE_CODE_NOT_FOUND,
+  RESPONSE_CODE_SUCCESS,
+} from "../../../helpers/response-codes.js";
 
 export default async function (req, resp) {
   const user = await UserRecords.findCustomerByEmailOrUsername(
@@ -8,12 +11,12 @@ export default async function (req, resp) {
 
   if (!user) {
     resp
-      .status(NOT_FOUND)
+      .status(RESPONSE_CODE_NOT_FOUND)
       .json({ status: "error", message: "customer not found" });
     return;
   }
 
-  resp.status(SUCCESS).json({ user: transform(user) });
+  resp.status(RESPONSE_CODE_SUCCESS).json({ user: transform(user) });
 }
 
 function transform(user) {

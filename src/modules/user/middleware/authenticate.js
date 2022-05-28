@@ -1,5 +1,5 @@
 import passport from "passport";
-import { UNAUTHORIZED } from "../../../helpers/response-codes.js";
+import { RESPONSE_CODE_UNAUTHORIZED } from "../../../helpers/response-codes.js";
 
 export default function (req, res, next) {
   passport.authenticate("jwt", { session: false }, function (err, user) {
@@ -7,7 +7,7 @@ export default function (req, res, next) {
 
     if (!user)
       return res
-        .status(UNAUTHORIZED)
+        .status(RESPONSE_CODE_UNAUTHORIZED)
         .json({ message: "Unauthorized Access - No Token Provided!" });
 
     req.user = user;

@@ -6,7 +6,7 @@ import { useWallet } from "../../../services/umoja/index.js";
 import UserJwtAuthenticator from "../logics/UserJwtAuthenticator.js";
 import {
   RESPONSE_CODE_CREATED,
-  SUCCESS,
+  RESPONSE_CODE_SUCCESS,
 } from "../../../helpers/response-codes.js";
 
 export default async function loginOrRegisterUserAction(req, res) {
@@ -14,7 +14,7 @@ export default async function loginOrRegisterUserAction(req, res) {
   let authenticated = await new UserJwtAuthenticator().authenticate(input);
 
   if (authenticated !== false) {
-    res.status(SUCCESS).json(authenticated);
+    res.status(RESPONSE_CODE_SUCCESS).json(authenticated);
     return;
   }
 

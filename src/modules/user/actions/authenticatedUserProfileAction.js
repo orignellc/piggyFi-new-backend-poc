@@ -1,5 +1,5 @@
-import { SUCCESS } from "../../../helpers/response-codes.js";
+import { RESPONSE_CODE_SUCCESS } from "../../../helpers/response-codes.js";
 
 export default function authenticatedUserProfileAction(req, resp) {
-  resp.status(SUCCESS).json({ user: req.user });
+  resp.status(RESPONSE_CODE_SUCCESS).json({ user: req.user });
 }
