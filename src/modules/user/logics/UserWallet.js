@@ -86,6 +86,10 @@ export default class UserWallet {
 
     return wallet.balance_in_local_currency < amount;
   }
+
+  async updateKYC(fields) {
+    await this.#walletProvider.updateKYC(fields);
+  }
 }
 
 export function useDefaultUserWalletFactory(user) {

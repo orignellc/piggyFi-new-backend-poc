@@ -13,8 +13,10 @@ export default async function registerUserAction(req, res) {
   });
 }
 
-function getRegisterInput(request) {
+export function getRegisterInput(request) {
   return {
+    last_name: request.last_name,
+    first_name: request.first_name,
     name: request.name,
     username: request.username,
     email: request.email,

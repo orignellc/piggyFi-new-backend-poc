@@ -5,6 +5,7 @@ import authenticatedUserProfileAction from "./actions/authenticatedUserProfileAc
 import authenticate from "../../modules/user/middleware/authenticate.js";
 import customerPublicProfileAction from "./actions/customerPublicProfileAction.js";
 import loginOrRegisterUserAction from "./actions/loginOrRegisterUserAction.js";
+import UserProfileController from "./controllers/userProfileController.js";
 
 const UserRouter = Router();
 
@@ -12,7 +13,9 @@ UserRouter.route("/login").post(loginAction);
 UserRouter.route("/register").post(registerUserAction);
 UserRouter.route("/loginOrRegister").post(loginOrRegisterUserAction);
 
+UserRouter.route("/profile").put(authenticate, UserProfileController.update);
 UserRouter.route("/profile").get(authenticate, authenticatedUserProfileAction);
+
 UserRouter.route("/:identifier/profile").get(
   authenticate,
   customerPublicProfileAction

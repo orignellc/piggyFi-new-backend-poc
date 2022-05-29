@@ -59,11 +59,6 @@ export default class UmojaWallet {
     };
   }
 
-  async #findByWalletId(id) {
-    const { data } = await this.http.get(`/wallets/${id}`);
-    return data;
-  }
-
   async details() {
     const wallet = await this.#findByWalletId(this.userWallet.wallet_id);
 
@@ -120,6 +115,15 @@ export default class UmojaWallet {
       recipient,
     };
   }
+
+  async updateKYC(fields) {
+    const { data } = await this.http.patch(
+      `users/${this.userWallet.user_id}/`,
+      fields
+    );
+    return data;
+  }
+
   async #withdrawFeeForAmount(amount) {
     const feeCalculator = await this.#makeFeeCalculator(
       amount,
@@ -145,5 +149,10 @@ export default class UmojaWallet {
       currency
     );
     return new FeeCalculator(amount, hundredUsdInCurrency);
+  }
+
+  async #findByWalletId(id) {
+    const { data } = await this.http.get(`/wallets/${id}`);
+    return data;
   }
 }

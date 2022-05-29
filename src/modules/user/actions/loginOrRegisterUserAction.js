@@ -27,6 +27,8 @@ export default async function loginOrRegisterUserAction(req, res) {
 
 function getRegisterInput(request) {
   return {
+    last_name: request.last_name,
+    first_name: request.first_name,
     name: request.name,
     username: request.username,
     email: request.email,

@@ -2,6 +2,12 @@ import { USER_TYPE_CUSTOMER, UserModel } from "../models/userModel.js";
 import Encryptor from "../../../helpers/encrypter.js";
 
 export default class UserRecords {
+  user;
+
+  constructor(user) {
+    this.user = user;
+  }
+
   static async createNewUser(fields) {
     fields.password = Encryptor.encrypt(fields.password);
     return await UserModel.create(fields);
@@ -31,5 +37,10 @@ export default class UserRecords {
       $or: [{ email: value }, { username: value }],
       $and: [{ type: USER_TYPE_CUSTOMER }],
     });
+  }
+
+  update(fields) {
+    this.user.update(fields);
+    return this.user;
   }
 }
