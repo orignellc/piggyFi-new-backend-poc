@@ -40,7 +40,13 @@ export default class UserRecords {
   }
 
   update(fields) {
-    this.user.update(fields);
+    Object.keys(fields)
+      .filter((field) => fields[field])
+      .forEach((field) => {
+        this.user[field] = fields[field];
+      });
+
+    this.user.save();
     return this.user;
   }
 }
