@@ -14,6 +14,7 @@ function getSendInput(request) {
     amount: request.amount,
     recipient: {
       phone: request.recipient.phone,
+      email: request.recipient.email,
       first_name: request.recipient.first_name,
       last_name: request.recipient.last_name,
       mobile_money: {
