@@ -1,12 +1,23 @@
 import sendAction from "../actions/sendAction.js";
-import { RESPONSE_CODE_CREATED } from "../../../helpers/response-codes.js";
+import {
+  RESPONSE_CODE_CREATED,
+  RESPONSE_CODE_SERVER_ERROR,
+} from "../../../helpers/response-codes.js";
+import { INSUFFICIENT_FUND } from "../../user/logics/UserWallet.js";
 
 export async function create(req, res) {
   const input = getSendInput(req.body);
 
-  const result = await sendAction(req.user, input);
-
-  res.status(RESPONSE_CODE_CREATED).json(result);
+  try {
+    const result = await sendAction(req.user, input);
+    res.status(RESPONSE_CODE_CREATED).json(result);
+  } catch (e) {
+    if (e === INSUFFICIENT_FUND) {
+      res.status(RESPONSE_CODE_SERVER_ERROR).json({
+        message: "Insufficient fund",
+      });
+    }
+  }
 }
 
 function getSendInput(request) {

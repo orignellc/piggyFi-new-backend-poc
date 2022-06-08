@@ -4,6 +4,8 @@ import UmojaWallet, {
 import { useWallet as useUmojaWallet } from "../../../services/umoja/index.js";
 import { TransactionModel } from "../models/transactionModel.js";
 
+export const INSUFFICIENT_FUND = "Insufficient fund";
+
 export default class UserWallet {
   #walletProvider;
   user;
@@ -53,7 +55,7 @@ export default class UserWallet {
     this.user = await this.syncBalanceAndGetDetails();
 
     if (this.#walletCannotAffordInLocal(amount)) {
-      throw new Error("Insufficient fund");
+      throw INSUFFICIENT_FUND;
     }
 
     const transaction = await this.#walletProvider.withdraw(
@@ -85,6 +87,12 @@ export default class UserWallet {
     const wallet = this.getUserProviderWallet();
 
     return wallet.balance_in_local_currency < amount;
+  }
+
+  #getWalletLocalBalance() {
+    const wallet = this.getUserProviderWallet();
+
+    return wallet.balance_in_local_currency;
   }
 
   async updateKYC(fields) {
