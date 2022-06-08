@@ -1,9 +1,11 @@
 import sendAction from "../actions/sendAction.js";
 import {
   RESPONSE_CODE_CREATED,
+  RESPONSE_CODE_PAYMENT_REQUIRED,
   RESPONSE_CODE_SERVER_ERROR,
 } from "../../../helpers/response-codes.js";
 import { INSUFFICIENT_FUND } from "../../user/logics/UserWallet.js";
+import InsufficientFundException from "../exceptions/insufficientFundException.js";
 
 export async function create(req, res) {
   const input = getSendInput(req.body);
@@ -12,9 +14,11 @@ export async function create(req, res) {
     const result = await sendAction(req.user, input);
     res.status(RESPONSE_CODE_CREATED).json(result);
   } catch (e) {
-    if (e === INSUFFICIENT_FUND) {
-      res.status(RESPONSE_CODE_SERVER_ERROR).json({
-        message: "Insufficient fund",
+    if (e instanceof InsufficientFundException) {
+      res.status(RESPONSE_CODE_PAYMENT_REQUIRED).json({
+        error: e.name,
+        message: e.message,
+        balance: e.balance,
       });
     }
   }
