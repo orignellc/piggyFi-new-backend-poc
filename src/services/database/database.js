@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import UserRecords from "../../modules/user/logics/UserRecords.js";
 
 export async function connectDatabase() {
   try {
