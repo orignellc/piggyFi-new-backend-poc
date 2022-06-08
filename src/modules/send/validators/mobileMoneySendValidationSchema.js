@@ -14,6 +14,7 @@ export default async function mobileMoneySendValidationSchema(req) {
     amount: Joi.number().required().max(wallet.balance_in_local_currency),
     recipient: {
       phone: PhoneJoi.string().phoneNumber({ defaultCountry: "NG" }).required(),
+      email: Joi.string().email().required(),
       first_name: Joi.string().required(),
       last_name: Joi.string().required(),
       mobile_money: Joi.object()
