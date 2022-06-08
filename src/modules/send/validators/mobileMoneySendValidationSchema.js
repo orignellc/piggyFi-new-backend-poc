@@ -6,12 +6,12 @@ import { MOBILE_MONEY_PROVIDERS } from "../../../services/umoja/umojaWallet.js";
 export default async function mobileMoneySendValidationSchema(req) {
   const PhoneJoi = Joi.extend(JoiPhoneNumber);
 
-  const userWaller = useDefaultUserWalletFactory(req.user);
-  await userWaller.syncBalanceAndGetDetails();
-  const wallet = userWaller.getUserProviderWallet();
+  // const userWaller = useDefaultUserWalletFactory(req.user);
+  // await userWaller.syncBalanceAndGetDetails();
+  // const wallet = userWaller.getUserProviderWallet();
 
   return Joi.object({
-    amount: Joi.number().required().max(wallet.balance_in_local_currency),
+    amount: Joi.number().required(), //.max(wallet.balance_in_local_currency),
     recipient: {
       phone: PhoneJoi.string().phoneNumber({ defaultCountry: "NG" }).required(),
       email: Joi.string().email().required(),
