@@ -20,7 +20,10 @@ export async function create(req, res) {
         message: e.message,
         balance: e.balance,
       });
+      return;
     }
+
+    res.status(RESPONSE_CODE_SERVER_ERROR).json(e);
   }
 }
 
