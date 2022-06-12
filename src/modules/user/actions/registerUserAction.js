@@ -1,11 +1,13 @@
 import UserRecords from "../logics/UserRecords.js";
 import { useDefaultUserWalletFactory } from "../logics/UserWallet.js";
 import { RESPONSE_CODE_CREATED } from "../../../helpers/response-codes.js";
+import VerificationCodeNotification from "../notifications/verificationCodeNotification.js";
 
 export default async function registerUserAction(req, res) {
   const input = getRegisterInput(req.body);
   let user = await UserRecords.createNewUser(input);
   user = await useDefaultUserWalletFactory(user).createWallet(user);
+  VerificationCodeNotification.instance().notify(user);
 
   res.status(RESPONSE_CODE_CREATED).json({
     status: "success",

@@ -1,0 +1,27 @@
+import axios from "axios";
+import ExceptionInvalidNotification from "./ExceptionInvalidNotification.js";
+
+export default class SmsChannel {
+  static async send(user, notification) {
+    if (!(notification && notification.toSMS)) {
+      throw new ExceptionInvalidNotification();
+    }
+
+    const config = {
+      params: {
+        username: process.env.INFOBIP_USERNAME,
+        password: process.env.INFOBIP_PASSWORD,
+        from: process.env.SMS_FROM,
+        to: user.phone,
+        text: notification.toSMS(user),
+      },
+    };
+
+    const response = await axios.get(
+      "https://89nv13.api.infobip.com/sms/1/text/query",
+      config
+    );
+
+    return response;
+  }
+}

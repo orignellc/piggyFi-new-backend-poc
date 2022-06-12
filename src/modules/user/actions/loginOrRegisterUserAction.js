@@ -8,6 +8,7 @@ import {
   RESPONSE_CODE_CREATED,
   RESPONSE_CODE_SUCCESS,
 } from "../../../helpers/response-codes.js";
+import VerificationCodeNotification from "../notifications/verificationCodeNotification.js";
 
 export default async function loginOrRegisterUserAction(req, res) {
   const input = getRegisterInput(req.body);
@@ -21,6 +22,7 @@ export default async function loginOrRegisterUserAction(req, res) {
   let user = await UserRecords.createNewUser(input);
   user = await useDefaultUserWalletFactory(user).createWallet();
   authenticated = await new UserJwtAuthenticator().authenticateUser(user);
+  VerificationCodeNotification.instance().notify(user);
 
   res.status(RESPONSE_CODE_CREATED).json(authenticated);
 }

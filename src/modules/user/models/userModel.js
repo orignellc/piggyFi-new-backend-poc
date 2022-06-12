@@ -85,6 +85,7 @@ export const UserSchema = mongoose.Schema(
       uppercase: true,
     },
     vendor: { type: VendorSchema },
+    phone_verified_at: { type: Date },
   },
   {
     timestamps: true,
@@ -93,6 +94,11 @@ export const UserSchema = mongoose.Schema(
 
 UserSchema.methods.matchPassword = function (password) {
   return Encryptor.compare(password, this.password);
+};
+
+UserSchema.methods.setPhoneVerified = function () {
+  this.phone_verified_at = new Date();
+  return this.save();
 };
 
 export const UserModel = mongoose.model("User", UserSchema);

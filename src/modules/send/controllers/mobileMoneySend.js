@@ -23,7 +23,7 @@ export async function create(req, res) {
       return;
     }
 
-    res.status(RESPONSE_CODE_SERVER_ERROR).json(e);
+    throw e;
   }
 }
 
