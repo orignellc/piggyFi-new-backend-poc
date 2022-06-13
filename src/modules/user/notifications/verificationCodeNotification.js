@@ -13,6 +13,7 @@ export default class VerificationCodeNotification extends Notification {
 
   toSMS(user) {
     const code = this.#verificationCode.newCode(user.id);
+    console.log(code);
     return `Verification Code: ${code}. Do not share with anyone`;
   }
 
