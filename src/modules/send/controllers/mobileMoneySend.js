@@ -17,6 +17,9 @@ export async function create(req, res) {
         error: e.name,
         message: e.message,
         balance: e.balance,
+        available_balance: e.available_balance,
+        local_currency: e.local_currency,
+        balance_in_local_currency: e.balance_in_local_currency,
       });
       return;
     }

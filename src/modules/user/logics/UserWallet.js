@@ -56,7 +56,7 @@ export default class UserWallet {
     this.user = await this.syncBalanceAndGetDetails();
 
     if (this.#walletCannotAffordInLocal(amount)) {
-      throw new InsufficientFundException(this.#getWalletLocalBalance());
+      throw new InsufficientFundException(this.getUserProviderWallet());
     }
 
     const transaction = await this.#walletProvider.withdraw(
