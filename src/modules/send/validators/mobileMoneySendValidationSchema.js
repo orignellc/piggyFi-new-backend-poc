@@ -3,7 +3,7 @@ import JoiPhoneNumber from "joi-phone-number";
 import { useDefaultUserWalletFactory } from "../../user/logics/UserWallet.js";
 import { MOBILE_MONEY_PROVIDERS } from "../../../services/umoja/umojaWallet.js";
 
-export default async function mobileMoneySendValidationSchema(req) {
+export default async function mobileMoneySendValidationSchema() {
   const PhoneJoi = Joi.extend(JoiPhoneNumber);
 
   // const userWaller = useDefaultUserWalletFactory(req.user);
@@ -17,6 +17,7 @@ export default async function mobileMoneySendValidationSchema(req) {
       email: Joi.string().email().required(),
       first_name: Joi.string().required(),
       last_name: Joi.string().required(),
+      country: Joi.string().required(),
       mobile_money: Joi.object()
         .required()
         .keys({

@@ -80,6 +80,7 @@ export default class UmojaWallet {
         user_full_name: `${recipient.first_name} ${recipient.last_name}`,
         user_email: recipient.email,
         user_phone_number: recipient.phone,
+        country: recipient.country,
         user_account_name: recipient.mobile_money.name,
         mobile_money_provider: recipient.mobile_money.provider,
         mobile_money_account_number: recipient.mobile_money.account_number,

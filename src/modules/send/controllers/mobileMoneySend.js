@@ -2,9 +2,7 @@ import sendAction from "../actions/sendAction.js";
 import {
   RESPONSE_CODE_CREATED,
   RESPONSE_CODE_PAYMENT_REQUIRED,
-  RESPONSE_CODE_SERVER_ERROR,
 } from "../../../helpers/response-codes.js";
-import { INSUFFICIENT_FUND } from "../../user/logics/UserWallet.js";
 import InsufficientFundException from "../exceptions/insufficientFundException.js";
 
 export async function create(req, res) {
@@ -35,6 +33,7 @@ function getSendInput(request) {
       email: request.recipient.email,
       first_name: request.recipient.first_name,
       last_name: request.recipient.last_name,
+      country: request.recipient.country,
       mobile_money: {
         provider: request.recipient.mobile_money.provider,
         name: request.recipient.mobile_money.name,
