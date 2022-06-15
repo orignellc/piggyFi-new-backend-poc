@@ -17,11 +17,9 @@ export default class SmsChannel {
       },
     };
 
-    const response = await axios.get(
+    return await axios.get(
       "https://89nv13.api.infobip.com/sms/1/text/query",
       config
     );
-
-    return response;
   }
 }

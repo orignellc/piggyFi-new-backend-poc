@@ -1,5 +1,4 @@
 import VerificationCodeManager from "../../../helpers/verificationCodeManager.js";
-import UserRecords from "./UserRecords.js";
 import UserVerificationFailedException from "../exceptions/userVerificationFailedException.js";
 
 export default class UserVerifier {
