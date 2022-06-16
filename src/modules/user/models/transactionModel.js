@@ -4,7 +4,7 @@ const TransactionSchema = mongoose.Schema({
   type: { type: String, enum: ["debit", "credit"], required: true },
   channel: {
     type: String,
-    enum: ["Mobile money", "Crypto", "Bank Transfer"],
+    enum: ["Mobile money", "Crypto", "Bank transfer"],
     required: true,
   },
   currency: { type: String, required: true },
@@ -21,9 +21,14 @@ const TransactionSchema = mongoose.Schema({
     last_name: { type: String },
     name: { type: String },
     mobile_money: {
-      provider: { type: String, required: true, lowercase: true },
-      name: { type: String, required: true },
-      account_number: { type: String, required: true },
+      provider: { type: String, lowercase: true },
+      name: { type: String },
+      account_number: { type: String },
+    },
+    bank_transfer: {
+      bank_name: { type: String },
+      account_name: { type: String },
+      account_number: { type: String },
     },
   },
   user: { type: mongoose.Types.ObjectId, ref: "User" },

@@ -3,6 +3,7 @@ import CurrencyConverter from "./CurrencyConverter.js";
 import FeeCalculator from "./FeeCalculator.js";
 
 export const WITHDRAW_TYPE_MOBILE_MONEY = "Mobile money";
+export const WITHDRAW_TYPE_BANK_TRANSFER = "Bank transfer";
 export const WITHDRAW_TYPE_CRYPTO = "Crypto";
 
 export const MOBILE_MONEY_PROVIDER_MPESA = "M-PESA";
@@ -72,18 +73,30 @@ export default class UmojaWallet {
   }
 
   async withdraw(amount, recipient, type) {
-    let input;
+    let input = {
+      amount,
+      user_full_name: `${recipient.first_name} ${recipient.last_name}`,
+      user_email: recipient.email,
+      user_phone_number: recipient.phone,
+      country: recipient.country,
+    };
+
     if (type === WITHDRAW_TYPE_MOBILE_MONEY) {
       input = {
-        amount,
+        ...input,
         withdraw_type: WITHDRAW_TYPE_MOBILE_MONEY,
-        user_full_name: `${recipient.first_name} ${recipient.last_name}`,
-        user_email: recipient.email,
-        user_phone_number: recipient.phone,
-        country: recipient.country,
         user_account_name: recipient.mobile_money.name,
         mobile_money_provider: recipient.mobile_money.provider,
         mobile_money_account_number: recipient.mobile_money.account_number,
+      };
+    } else if (type === WITHDRAW_TYPE_BANK_TRANSFER) {
+      input = {
+        ...input,
+        withdraw_type: WITHDRAW_TYPE_BANK_TRANSFER,
+        bank_account_user_account_number:
+          recipient.bank_transfer.account_number,
+        user_account_name: recipient.bank_transfer.account_name,
+        bank_name: recipient.bank_transfer.bank_name,
       };
     }
 
@@ -115,6 +128,14 @@ export default class UmojaWallet {
       },
       recipient,
     };
+  }
+
+  async withdrawViaBankTransfer(amount, recipient) {
+    return await this.withdraw(amount, recipient, WITHDRAW_TYPE_BANK_TRANSFER);
+  }
+
+  async withdrawViaMobileMoney(amount, recipient) {
+    return await this.withdraw(amount, recipient, WITHDRAW_TYPE_MOBILE_MONEY);
   }
 
   async updateKYC(fields) {

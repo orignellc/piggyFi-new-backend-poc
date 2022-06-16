@@ -59,10 +59,35 @@ export default class UserWallet {
       throw new InsufficientFundException(this.getUserProviderWallet());
     }
 
-    const transaction = await this.#walletProvider.withdraw(
+    const transaction = await this.#walletProvider.withdrawViaMobileMoney(
       amount,
-      recipient,
-      WITHDRAW_TYPE_MOBILE_MONEY
+      recipient
+    );
+
+    this.user = await this.syncBalanceAndGetDetails();
+    const userWallet = this.getUserProviderWallet();
+
+    return TransactionModel.create({
+      ...transaction,
+      user: this.user,
+      wallet_balance: {
+        current: userWallet.balance,
+        available: userWallet.available_balance,
+        local_currency: userWallet.balance_in_local_currency,
+      },
+    });
+  }
+
+  async withdrawViaBankTransfer({ amount, recipient }) {
+    this.user = await this.syncBalanceAndGetDetails();
+
+    if (this.#walletCannotAffordInLocal(amount)) {
+      throw new InsufficientFundException(this.getUserProviderWallet());
+    }
+
+    const transaction = await this.#walletProvider.withdrawViaBankTransfer(
+      amount,
+      recipient
     );
 
     this.user = await this.syncBalanceAndGetDetails();
