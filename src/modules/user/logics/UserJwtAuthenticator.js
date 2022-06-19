@@ -3,17 +3,14 @@ import UserAuthenticator from "./UserAuthenticator.js";
 
 export default class UserJwtAuthenticator extends UserAuthenticator {
   async authenticate({ identifier, password }) {
-    const authenticated = await super.authenticate({
+    const user = await super.authenticate({
       identifier,
       password,
     });
-    if (authenticated === false) {
-      return false;
-    }
 
     return {
       token: this.#generateJwt(),
-      user: this.user,
+      user: user,
     };
   }
 

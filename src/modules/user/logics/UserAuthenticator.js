@@ -1,4 +1,5 @@
 import UserRecords from "./UserRecords.js";
+import UnauthorizedException from "../exceptions/unauthorizedException.js";
 
 export default class UserAuthenticator {
   user;
@@ -9,10 +10,12 @@ export default class UserAuthenticator {
     }
     this.user = await UserRecords.findByPhoneEmailOrUsername(identifier);
 
-    const isValidCredentials = this.user && this.user.matchPassword(password);
+    if (!this.user) {
+      throw new UnauthorizedException("user does not exist", true);
+    }
 
-    if (!isValidCredentials) {
-      return false;
+    if (!this.user.matchPassword(password)) {
+      throw new UnauthorizedException("password does not match");
     }
 
     return this.user;

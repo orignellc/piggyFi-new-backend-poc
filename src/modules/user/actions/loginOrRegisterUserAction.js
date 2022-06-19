@@ -1,30 +1,39 @@
 import UserRecords from "../logics/UserRecords.js";
-import UserWallet, {
-  useDefaultUserWalletFactory,
-} from "../logics/UserWallet.js";
-import { useWallet } from "../../../services/umoja/index.js";
+import { useDefaultUserWalletFactory } from "../logics/UserWallet.js";
 import UserJwtAuthenticator from "../logics/UserJwtAuthenticator.js";
 import {
   RESPONSE_CODE_CREATED,
   RESPONSE_CODE_SUCCESS,
+  RESPONSE_CODE_UNAUTHORIZED,
 } from "../../../helpers/response-codes.js";
 import VerificationCodeNotification from "../notifications/verificationCodeNotification.js";
+import UnauthorizedException from "../exceptions/unauthorizedException.js";
 
 export default async function loginOrRegisterUserAction(req, res) {
   const input = getRegisterInput(req.body);
-  let authenticated = await new UserJwtAuthenticator().authenticate(input);
 
-  if (authenticated !== false) {
-    res.status(RESPONSE_CODE_SUCCESS).json(authenticated);
-    return;
+  try {
+    const authenticated = await new UserJwtAuthenticator().authenticate(input);
+
+    if (authenticated !== false) {
+      res.status(RESPONSE_CODE_SUCCESS).json(authenticated);
+    }
+  } catch (e) {
+    if (e instanceof UnauthorizedException && e.userDoesNotExist) {
+      const authenticated = await registerUser(input);
+      res.status(RESPONSE_CODE_CREATED).json(authenticated);
+    } else if (
+      e instanceof UnauthorizedException &&
+      e.userDoesNotExist === false
+    ) {
+      res.status(RESPONSE_CODE_UNAUTHORIZED).json({
+        message: e.message,
+        type: e.name,
+      });
+    } else {
+      throw e;
+    }
   }
-
-  let user = await UserRecords.createNewUser(input);
-  user = await useDefaultUserWalletFactory(user).createWallet();
-  authenticated = await new UserJwtAuthenticator().authenticateUser(user);
-  VerificationCodeNotification.instance().notify(user);
-
-  res.status(RESPONSE_CODE_CREATED).json(authenticated);
 }
 
 function getRegisterInput(request) {
@@ -41,4 +50,11 @@ function getRegisterInput(request) {
     password: request.password,
     type: request.type,
   };
+}
+
+async function registerUser(input) {
+  let user = await UserRecords.createNewUser(input);
+  user = await useDefaultUserWalletFactory(user).createWallet();
+  VerificationCodeNotification.instance().notify(user);
+  return await new UserJwtAuthenticator().authenticateUser(user);
 }
