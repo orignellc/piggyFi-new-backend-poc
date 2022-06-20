@@ -84,7 +84,7 @@ export const UserSchema = mongoose.Schema(
       default: USER_TYPE_CUSTOMER,
       uppercase: true,
     },
-    vendor: { type: VendorSchema },
+    // vendor: { type: VendorSchema },
     phone_verified_at: { type: Date },
   },
   {
