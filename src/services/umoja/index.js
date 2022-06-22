@@ -4,7 +4,7 @@ import UserWallet from "../../modules/user/logics/UserWallet.js";
 
 export function useWallet(user) {
   const http = axios.create({
-    baseURL: "https://money-api.staging.umoja.money",
+    baseURL: process.env.UMOJA_BASE_URL,
     headers: {
       Authorization: `Api-Key ${
         process.env.UMOJA_API_KEY || "CPfvia7Z.vA2kN6v6ujVRFU1HnOPbHN5aXKKfiWQ9"
