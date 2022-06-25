@@ -1,9 +1,9 @@
-import Notification from "../../../helpers/notification.js";
-import SmsChannel from "../../../services/infoBip/smsChannel.js";
+import Notification from "../../../services/notification/notification.js";
 import VerificationCodeManager from "../../../helpers/verificationCodeManager.js";
+import GlobalSmsChannel from "../../../services/notification/channels/globalSmsChannel.js";
 
 export default class VerificationCodeNotification extends Notification {
-  via = [SmsChannel];
+  via = [GlobalSmsChannel];
   #verificationCode;
 
   constructor(verificationCode) {

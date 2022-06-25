@@ -1,7 +1,7 @@
 import axios from "axios";
-import ExceptionInvalidNotification from "./ExceptionInvalidNotification.js";
+import ExceptionInvalidNotification from "../../exceptions/ExceptionInvalidNotification.js";
 
-export default class SmsChannel {
+export default class InfoBipSmsChannel {
   static async send(user, notification) {
     if (!(notification && notification.toSMS)) {
       throw new ExceptionInvalidNotification();
